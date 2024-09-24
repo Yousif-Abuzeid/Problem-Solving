@@ -1,0 +1,40 @@
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        // Base case: if either vector is empty, return nullptr
+        if (preorder.empty() || inorder.empty()) {
+            return nullptr;
+        }
+
+        // Get the root
+        int root = preorder[0];
+        TreeNode* myTree = new TreeNode(root);
+
+        // Check if there is only one node in the tree
+        if (preorder.size() == 1) {
+            return myTree;
+        }
+
+        // Find root in the inorder array
+        auto mid_it = std::find(inorder.begin(), inorder.end(), root);
+        if (mid_it == inorder.end()) {
+            throw std::invalid_argument("Invalid input: Root not found in inorder traversal.");
+        }
+
+        // Left subtree: inorder_new and preorder_new
+        vector<int> inorder_new(inorder.begin(), mid_it); // Left side of root in inorder
+        vector<int> preorder_new(preorder.begin() + 1, preorder.begin() + 1 + inorder_new.size()); // Skip root, take same size as left inorder
+
+        // Recursively build left subtree
+        myTree->left = buildTree(preorder_new, inorder_new);
+
+        // Right subtree: inorder_right and preorder_right
+        vector<int> inorder_right(mid_it + 1, inorder.end()); // Right side of root in inorder
+        vector<int> preorder_right(preorder.begin() + 1 + inorder_new.size(), preorder.end()); // Skip left subtree and root
+
+        // Recursively build right subtree
+        myTree->right = buildTree(preorder_right, inorder_right);
+
+        return myTree;
+    }
+};
