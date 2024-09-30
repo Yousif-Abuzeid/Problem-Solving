@@ -27,4 +27,3 @@ The order of your output does not matter.
 
 The solution is simple, we can use a dictionary to store the anagrams. The key of the dictionary will be the sorted string and the value will be the list of anagrams. We can iterate over the list of strings and sort each string and then add it to the dictionary. Finally, we can return the values of the dictionary as the output.
 
-```python
